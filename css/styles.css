@@ -236,3 +236,8 @@ html, body {
 .mdl-demo .mdl-menu__container {
   z-index: 99;
 }
+
+.imagen {
+    width: 100%;
+    height: 350px !important;
+}
