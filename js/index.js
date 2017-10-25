@@ -25,6 +25,8 @@ saludosChild.on('value', function(snapshot){
     $("#saludos-dos").html(""); // Limpiamos el cotenedor de saludos
     snapshot.forEach(function(e){
         var obj = e.val();
+        var url = "data:image/jpeg;base64," + obj.url;
+        var urlDef = url.trim();
         if(obj.url!=null){
             console.log("Saludos: "+ obj.detalle);
             $("#saludos-dos").append('<section class="mdl-cell mdl-cell--4-col section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">' +
@@ -32,7 +34,7 @@ saludosChild.on('value', function(snapshot){
                     obj.emisor + "</h4><h4>Receptor: "+ 
                     obj.receptor + "</h4><h4>Detalle: "+ 
                     obj.detalle + "</h4></div>" +
-                    '<img src="'+ obj.url +'" class="imagen"></div>' +
+                    '<img src="'+ urlDef +'" class="imagen"></div>' +
                     '<header class="section__play-btn mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-color--teal-100 mdl-color-text--white"><button onclick="removerSaludo(\''+e.key+'\')" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"><i class="material-icons">delete_forever</i></button></header></section>');
         }else{
             console.log("Saludos: "+ obj.detalle);
