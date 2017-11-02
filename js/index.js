@@ -1,6 +1,6 @@
 var database = firebase.database();
 var chilangoRef = database.ref("chilango");
-var cancionesChild = chilangoRef.child("canciones").orderByChild('votos');
+var cancionesChild = chilangoRef.child("canciones");
 var saludosChild = chilangoRef.child("saludos");
 
 var fabSearch = document.getElementById('add');
@@ -21,7 +21,7 @@ btnBuscar.addEventListener('click', function() {
 
 var cajaSaludos = document.getElementById('saludos-dos');
 var cajaCanciones = document.getElementById('canciones-dos');
-cancionesChild.on('value', function(snapshot){        
+cancionesChild.orderByChild('votos').limitToLast(6).on('value', function(snapshot){        
     $("#canciones-dos").html(""); // Limpiamos el cotenedor de canciones
     snapshot.forEach(function(e){
         var obj = e.val();
@@ -37,7 +37,8 @@ cancionesChild.on('value', function(snapshot){
     });
 });
 
-saludosChild.on('value', function(snapshot){        
+// Ordenar los saludos el más reciente de primero
+/*saludosChild.on('value', function(snapshot){        
     $("#saludos-dos").html(""); // Limpiamos el cotenedor de saludos
     snapshot.forEach(function(e){
         var obj = e.val();
@@ -64,9 +65,9 @@ saludosChild.on('value', function(snapshot){
             
         }
     });
-});
+});*/
 
-// Método viejo
+// Método viejo, canciones sin ordenar
 /*cancionesChild.on('value', function(snapshot){        
     $("#canciones-dos").html(""); // Limpiamos el cotenedor de canciones
     snapshot.forEach(function(e){
@@ -81,9 +82,9 @@ saludosChild.on('value', function(snapshot){
                     '<header class="section__play-btn mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-color--teal-100 mdl-color-text--white"><button onclick="remover(\''+e.key+'\')" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"><i class="material-icons">delete_forever</i></button></header></section>');
         }
     });
-});
+});*/
 
-saludosChild.on('value', function(snapshot){        
+saludosChild.limitToFirst(6).on('value', function(snapshot){        
     $("#saludos-dos").html(""); // Limpiamos el cotenedor de saludos
     snapshot.forEach(function(e){
         var obj = e.val();
@@ -110,7 +111,7 @@ saludosChild.on('value', function(snapshot){
             
         }
     });
-});*/
+});
 
 /*saludosChild.on('child_changed', function(snapshot) {
   console.log(snapshot.val());
@@ -176,4 +177,3 @@ function quitarAcentos(cadena){
     cadena = cadena.replace(/ú/gi,"u");
     return cadena;
 }
-    
