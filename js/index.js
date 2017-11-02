@@ -3,6 +3,22 @@ var chilangoRef = database.ref("chilango");
 var cancionesChild = chilangoRef.child("canciones").orderByChild('votos');
 var saludosChild = chilangoRef.child("saludos");
 
+var fabSearch = document.getElementById('add');
+var dialog = document.querySelector('dialog');
+var btnBuscar = document.getElementById('btnBuscar');
+var cajaResultado = document.getElementById('resultado');
+fabSearch.addEventListener('click', function() {
+    cajaResultado.innerHTML = "";
+    dialog.showModal();
+    /* Or dialog.show(); to show the dialog without a backdrop. */
+});
+dialog.querySelector('.close').addEventListener('click', function() {
+    dialog.close();
+});
+btnBuscar.addEventListener('click', function() {
+    buscarCancion($('#txtBuscar').val());
+});
+
 var cajaSaludos = document.getElementById('saludos-dos');
 var cajaCanciones = document.getElementById('canciones-dos');
 cancionesChild.on('value', function(snapshot){        
@@ -121,5 +137,25 @@ function removerSaludo(key){
     saludosChild.child(key).remove(function(error){
        console.log("Eliminado el nodo: "+ key); 
     });
+}
+
+function buscarCancion(texto){
+    console.log("Nombre de la canción: "+ texto);
+    cancionesChild.on('value', function(snapshot){ 
+        snapshot.forEach(function(e){
+            var obj = e.val();
+            if(obj.nombre==texto){
+                console.log("Búsqueda: "+ obj.nombre +" "+ obj.autor);
+                cajaResultado.innerHTML = "<h4><b>Nombre:</b> "+ 
+                        obj.nombre + "</h4><h4><b>Autor:</b> "+ 
+                        obj.autor + "</h4><h4><b>Votos:</b> "+ 
+                        obj.votos + "</h4></div></div>";
+            
+            }/*else{
+                cajaResultado.innerHTML = "<h4><b>No hay datos</b></h4>";
+            }*/
+        });
+    });
+    $('#txtBuscar').val("");
 }
     
