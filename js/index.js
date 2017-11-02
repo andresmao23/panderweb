@@ -140,22 +140,40 @@ function removerSaludo(key){
 }
 
 function buscarCancion(texto){
+    var res = 0;
+    var obj = null;
+    var obj2 = null;
+    cad1 = quitarAcentos(texto.toLowerCase());
     console.log("Nombre de la canción: "+ texto);
-    cancionesChild.on('value', function(snapshot){ 
+    cancionesChild.on('value', function(snapshot){
         snapshot.forEach(function(e){
-            var obj = e.val();
-            if(obj.nombre==texto){
-                console.log("Búsqueda: "+ obj.nombre +" "+ obj.autor);
-                cajaResultado.innerHTML = "<h4><b>Nombre:</b> "+ 
-                        obj.nombre + "</h4><h4><b>Autor:</b> "+ 
-                        obj.autor + "</h4><h4><b>Votos:</b> "+ 
-                        obj.votos + "</h4></div></div>";
-            
-            }/*else{
-                cajaResultado.innerHTML = "<h4><b>No hay datos</b></h4>";
-            }*/
+            obj = e.val();
+            cad2 = quitarAcentos(obj.nombre.toLowerCase());
+            if(cad1==cad2){
+                res = 1;
+                obj2 = obj;
+            }
         });
     });
+    console.log("Res: "+ res);
+    if(res == 1){
+        console.log("Búsqueda: "+ obj2.nombre +" "+ obj2.autor);
+        cajaResultado.innerHTML = "<h4><b>Nombre:</b> "+ 
+                obj2.nombre + "</h4><h4><b>Autor:</b> "+ 
+                obj2.autor + "</h4><h4><b>Votos:</b> "+ 
+                obj2.votos + "</h4></div></div>";
+    }else{
+        cajaResultado.innerHTML = "<h4><b>No hay datos</b></h4>";
+    }
     $('#txtBuscar').val("");
+}
+
+function quitarAcentos(cadena){
+    cadena = cadena.replace(/á/gi,"a");
+    cadena = cadena.replace(/é/gi,"e");
+    cadena = cadena.replace(/í/gi,"i");
+    cadena = cadena.replace(/ó/gi,"o");
+    cadena = cadena.replace(/ú/gi,"u");
+    return cadena;
 }
     
